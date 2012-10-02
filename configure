@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+sdl-config --version > /dev/null
+
+echo "buildable:  True"                   >  blank-slate.buildinfo
+echo "cc-options: `sdl-config --cflags`"  >> blank-slate.buildinfo
+echo "ld-options: `sdl-config --libs`"    >> blank-slate.buildinfo
