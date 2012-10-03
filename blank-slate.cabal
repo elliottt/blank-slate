@@ -15,11 +15,12 @@ library
   build-depends:        base        >= 4.5,
                         SDL         >= 0.6.4,
                         SDL-image   >= 0.6.1,
-                        OpenGLRaw21 >= 1.2.0.1
+                        OpenGLRaw   >= 1.2,
+                        OpenGLRaw21 >= 1.2,
+                        GLURaw      >= 1.2
   exposed-modules:      Graphics.BlankSlate,
                         Graphics.BlankSlate.Resource,
-                        Graphics.BlankSlate.Texture,
-                        Graphics.BlankSlate.Window
+                        Graphics.BlankSlate.Texture
   hs-source-dirs:       src
   c-sources:            cbits/sdl-opengl.c
   ghc-options:          -Wall
