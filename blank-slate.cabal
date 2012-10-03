@@ -19,7 +19,7 @@ library
                         OpenGLRaw21 >= 1.2,
                         GLURaw      >= 1.2
   exposed-modules:      Graphics.BlankSlate,
-                        Graphics.BlankSlate.Resource,
+                        Graphics.BlankSlate.Shader,
                         Graphics.BlankSlate.Texture
   hs-source-dirs:       src
   c-sources:            cbits/sdl-opengl.c

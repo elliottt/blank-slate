@@ -4,8 +4,8 @@ module Graphics.BlankSlate (
   , withGraphics
   ) where
 
-import Graphics.BlankSlate.Resource as Exports
-import Graphics.BlankSlate.Texture  as Exports
+import Graphics.BlankSlate.Shader  as Exports
+import Graphics.BlankSlate.Texture as Exports
 
 import Graphics.UI.SDL as SDL
 import Graphics.Rendering.GLU.Raw
