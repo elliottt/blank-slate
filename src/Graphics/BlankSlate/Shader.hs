@@ -10,6 +10,9 @@ module Graphics.BlankSlate.Shader (
   , freeShader
   , compileShader
   , compileShaderFromFile
+
+  , getShaderiv
+  , getShaderInfoLog
   ) where
 
 import Control.Exception (Exception(..),throwIO)
@@ -56,7 +59,7 @@ compileShader program shader@(Shader n) =
   with ptr            $ \ source -> do
     glShaderSource n 1 (castPtr source) nullPtr
     glCompileShader n
-    status <- getShaderParam shader gl_COMPILE_STATUS
+    status <- getShaderiv shader gl_COMPILE_STATUS
     when (fromIntegral status /= gl_TRUE) $ do
       message <- getShaderInfoLog shader
       throwIO (ShaderError message)
@@ -68,8 +71,8 @@ compileShaderFromFile path shader = do
   compileShader source shader
 
 -- | Retrieve a status parameter from a shader.
-getShaderParam :: Shader kind -> GLenum -> IO GLint
-getShaderParam (Shader n) param = alloca $ \ statusPtr -> do
+getShaderiv :: Shader kind -> GLenum -> IO GLint
+getShaderiv (Shader n) param = alloca $ \ statusPtr -> do
   glGetShaderiv n param statusPtr
   peek statusPtr
 
