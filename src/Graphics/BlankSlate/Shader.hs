@@ -1,19 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE EmptyDataDecls #-}
 
-module Graphics.BlankSlate.Shader (
-    SVertex
-  , SFragment
-
-  , Shader(..), ShaderError(..)
-  , newVertexShader, newFragmentShader
-  , freeShader
-  , compileShader
-  , compileShaderFromFile
-
-  , getShaderiv
-  , getShaderInfoLog
-  ) where
+module Graphics.BlankSlate.Shader where
 
 import Control.Exception (Exception(..),throwIO)
 import Control.Monad (when)
@@ -53,28 +41,38 @@ instance Exception ShaderError
 
 -- | Compile a shader from a string.  Throws a @ShaderError@ if there was a
 -- problem compiling the shader.
-compileShader :: String -> Shader kind -> IO ()
-compileShader program shader@(Shader n) =
-  withCString program $ \ ptr    ->
-  with ptr            $ \ source -> do
-    glShaderSource n 1 (castPtr source) nullPtr
-    glCompileShader n
-    status <- getShaderiv shader gl_COMPILE_STATUS
-    when (fromIntegral status /= gl_TRUE) $ do
-      message <- getShaderInfoLog shader
-      throwIO (ShaderError message)
+loadShader :: Shader kind -> String -> IO ()
+loadShader shader program = do
+  shaderSource shader program
+  compileShader shader
+  status <- getShaderiv shader gl_COMPILE_STATUS
+  when (status /= gl_TRUE) $ do
+    message <- getShaderInfoLog shader
+    throwIO (ShaderError message)
 
 -- | Compile a shader from a file.
-compileShaderFromFile :: FilePath -> Shader kind -> IO ()
-compileShaderFromFile path shader = do
-  source <- readFile path
-  compileShader source shader
+loadShaderFromFile :: Shader kind -> FilePath -> IO ()
+loadShaderFromFile shader path = loadShader shader =<< readFile path
+
+
+-- Primitive Wrappers ----------------------------------------------------------
+
+-- | Set the program source of a shader.
+shaderSource :: Shader kind -> String -> IO ()
+shaderSource (Shader n) program =
+  withCString program $ \ ptr    ->
+  with ptr            $ \ source ->
+    glShaderSource n 1 (castPtr source) nullPtr
+
+-- | Compile the shader.
+compileShader :: Shader kind -> IO ()
+compileShader  = glCompileShader . getShader
 
 -- | Retrieve a status parameter from a shader.
-getShaderiv :: Shader kind -> GLenum -> IO GLint
+getShaderiv :: Num a => Shader kind -> GLenum -> IO a
 getShaderiv (Shader n) param = alloca $ \ statusPtr -> do
   glGetShaderiv n param statusPtr
-  peek statusPtr
+  fromIntegral `fmap` peek statusPtr
 
 -- | Get the contents of the shader's info log.
 getShaderInfoLog :: Shader kind -> IO String
