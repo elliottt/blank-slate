@@ -4,6 +4,7 @@ module Graphics.BlankSlate (
   , withGraphics
   ) where
 
+import Graphics.BlankSlate.Mesh    as Exports
 import Graphics.BlankSlate.Shader  as Exports
 import Graphics.BlankSlate.Texture as Exports
 
