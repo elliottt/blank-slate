@@ -1,7 +1,9 @@
 module Graphics.BlankSlate (
     module Exports
 
+  , Window(..)
   , withGraphics
+  , flush
   ) where
 
 import Graphics.BlankSlate.Mesh    as Exports
@@ -14,11 +16,14 @@ import Graphics.Rendering.OpenGL.Raw.Core21
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
 
 
-withGraphics :: String -> Int -> Int -> IO a -> IO a
+newtype Window = Window { getWindow :: SDL.Surface }
+
+
+withGraphics :: String -> Int -> Int -> (Window -> IO a) -> IO a
 withGraphics title width height body = withInit [InitEverything] $ do
   -- SDL
   SDL.setCaption title ""
-  _ <- SDL.setVideoMode width height 24 [OpenGL]
+  win <- SDL.setVideoMode width height 24 [OpenGL]
 
   -- OpenGL
   glClearColor 0 0 0 1.0
@@ -38,4 +43,10 @@ withGraphics title width height body = withInit [InitEverything] $ do
 
   glFlush
 
-  body
+  body (Window win)
+
+
+flush :: Window -> IO ()
+flush win = do
+  glFlush
+  SDL.flip (getWindow win)
