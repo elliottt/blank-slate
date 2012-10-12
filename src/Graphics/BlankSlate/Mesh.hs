@@ -13,7 +13,7 @@ module Graphics.BlankSlate.Mesh (
   , gl_STATIC_COPY, gl_STREAM_COPY, gl_DYNAMIC_COPY
   ) where
 
-import Foreign (allocaArray,withArrayLen,peekArray,Storable,castPtr)
+import Foreign (allocaArray,withArrayLen,peekArray,Storable,castPtr,sizeOf)
 import Data.Array.Storable (StorableArray,withStorableArray,getBounds)
 import Graphics.Rendering.OpenGL.Raw.Core21
 
@@ -59,11 +59,13 @@ unbindBuffer name = bindBuffer name (Buffer 0)
 storableArraySize :: Storable a => StorableArray Int a -> IO GLsizeiptr
 storableArraySize a = prjSize `fmap` getBounds a
   where
-  prjSize (_,n) = fromIntegral (n+1)
+  prjElem :: Storable a => StorableArray Int a -> a
+  prjElem _ = undefined
+  prjSize (_,n) = fromIntegral ((n+1) * sizeOf (prjElem a))
 
 -- | Set the buffer data for an allocated buffer, with the content of a mesh.
 bufferData :: Storable a => GLenum -> StorableArray Int a -> GLenum -> IO ()
 bufferData target a usage = do
   len <- storableArraySize a
   withStorableArray a $ \ ptr ->
-    glBufferData target len (castPtr ptr) usage
+    glBufferData target len ptr usage

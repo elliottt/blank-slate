@@ -26,16 +26,15 @@ withGraphics title width height body = withInit [InitEverything] $ do
   win <- SDL.setVideoMode width height 24 [OpenGL]
 
   -- OpenGL
-  glClearColor 0 0 0 1.0
-  glClearDepth 1
-  glDepthFunc  gl_LESS
-  glShadeModel gl_SMOOTH
+  glClearColor 0 0 0 0
 
-  glMatrixMode gl_PROJECTION
-  glLoadIdentity
   gluPerspective 45 (fromIntegral width / fromIntegral height) 0.1 100
 
   glMatrixMode gl_MODELVIEW
+  glLoadIdentity
+
+  glMatrixMode gl_PROJECTION
+  glLoadIdentity
 
   glEnable gl_TEXTURE_2D
   glEnable gl_BLEND
@@ -49,4 +48,5 @@ withGraphics title width height body = withInit [InitEverything] $ do
 flush :: Window -> IO ()
 flush win = do
   glFlush
+  SDL.glSwapBuffers
   SDL.flip (getWindow win)
