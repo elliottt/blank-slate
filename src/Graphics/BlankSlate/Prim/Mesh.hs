@@ -1,5 +1,5 @@
-module Graphics.BlankSlate.Mesh (
-    module Graphics.BlankSlate.Mesh
+module Graphics.BlankSlate.Prim.Mesh (
+    module Graphics.BlankSlate.Prim.Mesh
 
     -- * Buffers
   , gl_ARRAY_BUFFER

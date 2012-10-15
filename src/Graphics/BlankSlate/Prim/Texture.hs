@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 
-module Graphics.BlankSlate.Texture (
+module Graphics.BlankSlate.Prim.Texture (
     Texture(..)
   , newTexture, newTextures
   , freeTexture, freeTextures

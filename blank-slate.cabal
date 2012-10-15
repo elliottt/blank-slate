@@ -20,9 +20,9 @@ library
                         OpenGLRaw21 >= 1.2,
                         GLURaw      >= 1.2
   exposed-modules:      Graphics.BlankSlate,
-                        Graphics.BlankSlate.Mesh,
-                        Graphics.BlankSlate.Shader,
-                        Graphics.BlankSlate.Texture
+                        Graphics.BlankSlate.Prim.Mesh,
+                        Graphics.BlankSlate.Prim.Shader,
+                        Graphics.BlankSlate.Prim.Texture
   hs-source-dirs:       src
   c-sources:            cbits/sdl-opengl.c
   ghc-options:          -Wall

@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE EmptyDataDecls #-}
 
-module Graphics.BlankSlate.Shader where
+module Graphics.BlankSlate.Prim.Shader where
 
 import Control.Exception (Exception(..),throwIO)
 import Control.Monad (when)

@@ -1,14 +1,14 @@
 module Graphics.BlankSlate (
-    module Exports
+    module Prim
 
   , Window(..)
   , withGraphics
   , flush
   ) where
 
-import Graphics.BlankSlate.Mesh    as Exports
-import Graphics.BlankSlate.Shader  as Exports
-import Graphics.BlankSlate.Texture as Exports
+import Graphics.BlankSlate.Prim.Mesh    as Prim
+import Graphics.BlankSlate.Prim.Shader  as Prim
+import Graphics.BlankSlate.Prim.Texture as Prim
 
 import Graphics.UI.SDL as SDL
 import Graphics.Rendering.GLU.Raw
