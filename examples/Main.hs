@@ -7,7 +7,7 @@ import Control.Exception (bracket)
 import Control.Monad (forever)
 import Data.Array (Array,listArray)
 import Data.Array.Storable (thaw)
-import Foreign (nullPtr,with)
+import Foreign (nullPtr)
 
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
 import Graphics.Rendering.OpenGL.Raw.Core21
@@ -21,19 +21,18 @@ verts = listArray (0,11)
   ]
 
 main :: IO ()
-main  = withGraphics "Test" 640 480
-      $ \ win  -> bracket newVertexShader freeShader
-      $ \ vert -> bracket newFragmentShader freeShader
-      $ \ frag -> do
+main  = withGraphics "Test" 640 480           $ \ win  ->
+      bracket newProgram        deleteProgram $ \ pgm  ->
+      bracket newVertexShader   deleteShader  $ \ vert ->
+      bracket newFragmentShader deleteShader  $ \ frag -> do
 
         loadShaderFromFile vert "examples/vert.glsl"
         loadShaderFromFile frag "examples/frag.glsl"
 
-        pgm <- glCreateProgram
-        glAttachShader pgm (getShader vert)
-        glAttachShader pgm (getShader frag)
-        glLinkProgram pgm
-        glUseProgram pgm
+        attachShader pgm vert
+        attachShader pgm frag
+        linkProgram pgm
+        useProgram pgm
 
         -- ship the triangle data to the card
         triangle     <- genBuffer

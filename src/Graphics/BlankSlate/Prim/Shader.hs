@@ -6,10 +6,37 @@ module Graphics.BlankSlate.Prim.Shader where
 import Control.Exception (Exception(..),throwIO)
 import Control.Monad (when)
 import Data.Typeable (Typeable)
-import Foreign (nullPtr,castPtr,alloca,allocaArray,peek,with)
+import Foreign (nullPtr,castPtr,alloca,allocaArray,peek,with,withArrayLen)
 import Foreign.C.String (withCString,peekCStringLen)
 import Graphics.Rendering.OpenGL.Raw.Core21
 
+
+-- Programs --------------------------------------------------------------------
+
+newtype Program = Program
+  { getProgram :: GLuint
+  } deriving (Show)
+
+newProgram :: IO Program
+newProgram  = Program `fmap` glCreateProgram
+
+attachShader :: Program -> Shader kind -> IO ()
+attachShader pgm shader = glAttachShader (getProgram pgm) (getShader shader)
+
+detachShader :: Program -> Shader king -> IO ()
+detachShader pgm shader = glDetachShader (getProgram pgm) (getShader shader)
+
+deleteProgram :: Program -> IO ()
+deleteProgram  = glDeleteProgram . getProgram
+
+linkProgram :: Program -> IO ()
+linkProgram  = glLinkProgram . getProgram
+
+useProgram :: Program -> IO ()
+useProgram  = glUseProgram . getProgram
+
+
+-- Shaders ---------------------------------------------------------------------
 
 data SVertex
 data SFragment
@@ -31,8 +58,8 @@ newShader :: GLenum -> IO (Shader kind)
 newShader kind = Shader `fmap` glCreateShader kind
 
 -- | Free an allocated shader.
-freeShader :: Shader kind -> IO ()
-freeShader  = glDeleteShader . getShader
+deleteShader :: Shader kind -> IO ()
+deleteShader  = glDeleteShader . getShader
 
 data ShaderError = ShaderError String
     deriving (Eq,Show,Typeable)
