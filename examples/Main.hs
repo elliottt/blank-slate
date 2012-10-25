@@ -6,8 +6,8 @@ import Control.Concurrent (threadDelay)
 import Control.Exception (bracket)
 import Control.Monad (forever)
 import Data.Array (Array,listArray)
-import Data.Array.Storable (thaw)
-import Foreign (nullPtr)
+import Data.Array.Storable (thaw,withStorableArray)
+import Foreign (nullPtr,castPtr)
 import System.Exit (exitSuccess)
 
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
@@ -42,7 +42,8 @@ main  =
     triangle     <- genBuffer
     triangleData <- thaw verts
     bindBuffer gl_ARRAY_BUFFER triangle
-    bufferData gl_ARRAY_BUFFER triangleData gl_STATIC_DRAW
+    withStorableArray triangleData $ \ ptr ->
+      glBufferData gl_ARRAY_BUFFER (12 * 4) (castPtr ptr) gl_STATIC_DRAW
     glVertexPointer 4 gl_FLOAT 0 nullPtr
     unbindBuffer gl_ARRAY_BUFFER
 

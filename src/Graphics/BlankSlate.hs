@@ -6,7 +6,7 @@ module Graphics.BlankSlate (
   , flush
   ) where
 
-import Graphics.BlankSlate.Prim.Mesh    as Prim
+import Graphics.BlankSlate.Prim.Buffer  as Prim
 import Graphics.BlankSlate.Prim.Shader  as Prim
 import Graphics.BlankSlate.Prim.Texture as Prim
 
