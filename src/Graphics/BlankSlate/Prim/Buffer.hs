@@ -1,7 +1,7 @@
 module Graphics.BlankSlate.Prim.Buffer where
 
 import Foreign (allocaArray,withArrayLen,peekArray)
-import Graphics.Rendering.OpenGL.Raw.Core21
+import Graphics.Rendering.OpenGL.Raw.Core31
 
 
 -- Data Buffers ----------------------------------------------------------------

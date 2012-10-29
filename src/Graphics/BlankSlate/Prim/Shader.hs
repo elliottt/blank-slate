@@ -8,7 +8,7 @@ import Control.Monad (when)
 import Data.Typeable (Typeable)
 import Foreign (nullPtr,castPtr,alloca,allocaArray,peek,with,withArrayLen)
 import Foreign.C.String (withCString,peekCStringLen)
-import Graphics.Rendering.OpenGL.Raw.Core21
+import Graphics.Rendering.OpenGL.Raw.Core31
 
 
 -- Programs --------------------------------------------------------------------

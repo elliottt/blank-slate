@@ -17,7 +17,6 @@ library
                         SDL         >= 0.6.4,
                         SDL-image   >= 0.6.1,
                         OpenGLRaw   >= 1.2,
-                        OpenGLRaw21 >= 1.2,
                         GLURaw      >= 1.2
   exposed-modules:      Graphics.BlankSlate,
                         Graphics.BlankSlate.Prim.Buffer,
@@ -34,6 +33,5 @@ executable blank-slate-test
                         array       >= 0.4.0.0,
                         SDL         >= 0.6.4,
                         OpenGLRaw   >= 1.2,
-                        OpenGLRaw21 >= 1.2,
                         blank-slate
   ghc-options:          -Wall -threaded

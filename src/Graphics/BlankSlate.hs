@@ -12,8 +12,8 @@ import Graphics.BlankSlate.Prim.Texture as Prim
 
 import Graphics.UI.SDL as SDL
 import Graphics.Rendering.GLU.Raw
-import Graphics.Rendering.OpenGL.Raw.Core21
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
+import Graphics.Rendering.OpenGL.Raw.Core31
 
 
 newtype Window = Window { getWindow :: SDL.Surface }

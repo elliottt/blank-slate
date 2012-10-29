@@ -14,7 +14,7 @@ import Foreign (Ptr,allocaArray,peekArray,withArrayLen,withForeignPtr)
 import Foreign.C.Types (CInt(..),CUInt(..))
 import Graphics.UI.SDL
 import Graphics.UI.SDL.Image
-import Graphics.Rendering.OpenGL.Raw.Core21
+import Graphics.Rendering.OpenGL.Raw.Core31
 
 
 newtype Texture = Texture

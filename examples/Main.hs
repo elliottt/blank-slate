@@ -11,7 +11,7 @@ import Foreign (nullPtr,castPtr)
 import System.Exit (exitSuccess)
 
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
-import Graphics.Rendering.OpenGL.Raw.Core21
+import Graphics.Rendering.OpenGL.Raw.Core31
 
 import Graphics.UI.SDL as SDL
 
