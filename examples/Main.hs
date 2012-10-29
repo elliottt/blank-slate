@@ -1,6 +1,7 @@
 module Main where
 
 import Graphics.BlankSlate
+import Paths_blank_slate
 
 import Control.Concurrent (threadDelay)
 import Control.Exception (bracket)
@@ -9,6 +10,7 @@ import Data.Array (Array,listArray)
 import Data.Array.Storable (thaw,withStorableArray)
 import Foreign (nullPtr,castPtr)
 import System.Exit (exitSuccess)
+import System.FilePath ((</>))
 
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
 import Graphics.Rendering.OpenGL.Raw.Core31
@@ -30,8 +32,10 @@ main  =
   bracket newVertexShader   deleteShader  $ \ vert ->
   bracket newFragmentShader deleteShader  $ \ frag -> do
 
-    loadShaderFromFile vert "examples/vert.glsl"
-    loadShaderFromFile frag "examples/frag.glsl"
+    path <- getDataDir
+
+    loadShaderFromFile vert (path </> "vert.glsl")
+    loadShaderFromFile frag (path </> "frag.glsl")
 
     attachShader pgm vert
     attachShader pgm frag
