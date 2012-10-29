@@ -2,7 +2,13 @@
 
 set -ex
 
-cabal_dev="cabal-dev --sandbox=$PWD/../cabal-dev/"
+if [ -z "$1" ]; then
+  SANDBOX="$PWD/../cabal-dev"
+else
+  SANDBOX=$1
+fi
+
+cabal_dev="cabal-dev --sandbox=$SANDBOX"
 
 # Replace this with the path to an unpacked SDL-devel-mingw.
 # Also, make sure to have unpacked the dev files for SDL_image into that same
@@ -21,10 +27,10 @@ if [ ! -d SDL-image-* ]; then
   cabal-dev unpack SDL-image
 
   # patch SDL-image
-  cd SDL-image-*
+  pushd SDL-image-*
   cp ../patches/SDL-image/configure .
   patch -p1 < ../patches/SDL-image/Version.hsc.patch
-  cd ..
+  popd
 fi
 
 $cabal_dev install ./SDL-image-* \
