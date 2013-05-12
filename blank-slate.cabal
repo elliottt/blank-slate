@@ -6,18 +6,16 @@ author:                 Trevor Elliott
 maintainer:             awesomelyawesome@gmail.com
 copyright:              2012 Trevor Elliott
 category:               Graphics
-build-type:             Configure
+build-type:             Simple
 cabal-version:          >=1.8
 
-extra-source-files:     cbits/sdl_opengl.h
 data-dir:               examples
 data-files:             frag.glsl, vert.glsl
 
 library
   build-depends:        base        >= 4.5,
                         array       >= 0.4.0.0,
-                        SDL         >= 0.6.4,
-                        SDL-image   >= 0.6.1,
+                        GLFW-b      >= 0.1.0.5,
                         OpenGLRaw   >= 1.2,
                         GLURaw      >= 1.2
   exposed-modules:      Graphics.BlankSlate,
@@ -25,7 +23,6 @@ library
                         Graphics.BlankSlate.Prim.Shader,
                         Graphics.BlankSlate.Prim.Texture
   hs-source-dirs:       src
-  c-sources:            cbits/sdl-opengl.c
   ghc-options:          -Wall
 
 executable blank-slate-test
@@ -34,7 +31,7 @@ executable blank-slate-test
   build-depends:        base        >= 4.5,
                         filepath    >= 1.3,
                         array       >= 0.4.0.0,
-                        SDL         >= 0.6.4,
+                        GLFW-b      >= 0.1.0.5,
                         OpenGLRaw   >= 1.2,
                         blank-slate
   ghc-options:          -Wall -threaded

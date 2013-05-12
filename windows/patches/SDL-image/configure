@@ -1,7 +1,0 @@
-#!/bin/bash
-
-SDL_PREFIX=$HOME/Source/local/SDL-1.2.15
-SDL_image_PREFIX=$HOME/Source/local/SDL_image-1.2.12
-
-echo "cc-options: `sdl-config --prefix=$SDL_PREFIX --cflags` -I$SDL_image_PREFIX/include"  > SDL-image.buildinfo
-echo "ld-options: `sdl-config --libs` -L$SDL_image_PREFIX/lib/x86 -lSDL_image"           >> SDL-image.buildinfo

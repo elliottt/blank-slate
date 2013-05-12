@@ -5,17 +5,16 @@ import Paths_blank_slate
 
 import Control.Concurrent (threadDelay)
 import Control.Exception (bracket)
-import Control.Monad (forever)
+import Control.Monad (when)
 import Data.Array (Array,listArray)
 import Data.Array.Storable (thaw,withStorableArray)
 import Foreign (nullPtr,castPtr)
-import System.Exit (exitSuccess)
 import System.FilePath ((</>))
 
+-- for now
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
 import Graphics.Rendering.OpenGL.Raw.Core31
-
-import Graphics.UI.SDL as SDL
+import qualified Graphics.UI.GLFW as GLFW
 
 
 verts :: Array Int Float
@@ -27,7 +26,7 @@ verts = listArray (0,11)
 
 main :: IO ()
 main  =
-  withGraphics "Test" 640 480           $ \ win  ->
+  withGraphics "Test" 640 480             $
   bracket newProgram        deleteProgram $ \ pgm  ->
   bracket newVertexShader   deleteShader  $ \ vert ->
   bracket newFragmentShader deleteShader  $ \ frag -> do
@@ -59,21 +58,21 @@ main  =
     glMatrixMode gl_PROJECTION
     glLoadIdentity
 
-    forever $ do
-      evt <- SDL.pollEvent
-      case evt of
-        SDL.Quit -> exitSuccess
-        _        -> return ()
+    let loop = do
+          glClear (fromIntegral gl_COLOR_BUFFER_BIT)
 
-      glClear (fromIntegral gl_COLOR_BUFFER_BIT)
+          glMatrixMode gl_MODELVIEW
+          glLoadIdentity
 
-      glMatrixMode gl_MODELVIEW
-      glLoadIdentity
+          bindBuffer gl_ARRAY_BUFFER triangle
+          glDrawArrays gl_TRIANGLES 0 3
+          unbindBuffer gl_ARRAY_BUFFER
 
-      bindBuffer gl_ARRAY_BUFFER triangle
-      glDrawArrays gl_TRIANGLES 0 3
-      unbindBuffer gl_ARRAY_BUFFER
+          flush
 
-      flush win
+          threadDelay 1000
 
-      threadDelay 1000
+          open <- GLFW.windowIsOpen
+          when open loop
+
+    loop
