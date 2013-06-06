@@ -17,7 +17,8 @@ library
                         array       >= 0.4.0.0,
                         GLFW-b      >= 0.1.0.5,
                         OpenGLRaw   >= 1.2,
-                        GLURaw      >= 1.2
+                        GLURaw      >= 1.2,
+                        JuicyPixels >= 3.0
   exposed-modules:      Graphics.BlankSlate,
                         Graphics.BlankSlate.Prim.Buffer,
                         Graphics.BlankSlate.Prim.Shader,
