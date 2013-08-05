@@ -10,6 +10,7 @@ import Data.Array (Array,listArray)
 import Data.Array.Storable (thaw,withStorableArray)
 import Foreign (nullPtr,castPtr)
 import System.FilePath ((</>))
+import System.Exit
 
 -- for now
 import Graphics.Rendering.OpenGL.Raw.ARB.Compatibility
@@ -26,7 +27,7 @@ verts = listArray (0,11)
 
 main :: IO ()
 main  =
-  withGraphics "Test" 640 480             $
+  withGraphics "Test" 640 480             $ \ win  ->
   bracket newProgram        deleteProgram $ \ pgm  ->
   bracket newVertexShader   deleteShader  $ \ vert ->
   bracket newFragmentShader deleteShader  $ \ frag -> do
@@ -58,7 +59,14 @@ main  =
     glMatrixMode gl_PROJECTION
     glLoadIdentity
 
-    let loop = do
+    let handleKey _win k _code _ks _mods =
+            case k of
+                GLFW.Key'Q -> exitSuccess
+                _ -> return ()
+
+        loop = do
+          GLFW.pollEvents
+
           glClear (fromIntegral gl_COLOR_BUFFER_BIT)
 
           glMatrixMode gl_MODELVIEW
@@ -68,11 +76,12 @@ main  =
           glDrawArrays gl_TRIANGLES 0 3
           unbindBuffer gl_ARRAY_BUFFER
 
-          flush
+          flush win
 
           threadDelay 1000
 
-          open <- GLFW.windowIsOpen
-          when open loop
+          close <- GLFW.windowShouldClose win
+          when (not close) loop
 
+    GLFW.setKeyCallback win $ Just handleKey
     loop
