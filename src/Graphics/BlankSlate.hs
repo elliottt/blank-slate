@@ -17,27 +17,23 @@ import qualified Graphics.UI.GLFW as GLFW
 import qualified Control.Exception as X
 
 
-withGraphics :: String -> Int -> Int -> IO a -> IO a
-withGraphics title width height body = X.bracket setup cleanup (const body)
+withGraphics :: String -> Int -> Int -> (GLFW.Window -> IO a) -> IO a
+withGraphics title width height body =
+    do { check "GLFW.init" GLFW.init
+       ; w <- GLFW.createWindow width height title Nothing Nothing
+       ; case w of
+           Nothing -> fail "Could not create GLFW window."
+           Just win -> X.bracket (setup win) (cleanup win) (const (body win))
+       }
   where
 
   check l m = do
     success <- m
     unless success (fail ("a call to ``" ++ l ++ "` failed"))
 
-  setup = do
+  setup win = do
+    GLFW.makeContextCurrent (Just win)
 
-    -- GLFW
-    check "GLFW.initialize"  GLFW.initialize
-
-    check "GLFW.openWindow" $ GLFW.openWindow GLFW.defaultDisplayOptions
-      { GLFW.displayOptions_width  = width
-      , GLFW.displayOptions_height = height
-      }
-
-    GLFW.setWindowTitle title
-
-    -- OpenGL
     glClearColor 0 0 0 0
 
     gluPerspective 45 (fromIntegral width / fromIntegral height) 0.1 100
@@ -54,12 +50,12 @@ withGraphics title width height body = X.bracket setup cleanup (const body)
 
     glFlush
 
-  cleanup () = do
-    GLFW.closeWindow
+  cleanup w () = do
+    GLFW.destroyWindow w
     GLFW.terminate
 
 
-flush :: IO ()
-flush  = do
+flush :: GLFW.Window -> IO ()
+flush win = do
   glFlush
-  GLFW.swapBuffers
+  GLFW.swapBuffers win
