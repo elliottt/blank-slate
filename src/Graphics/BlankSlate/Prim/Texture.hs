@@ -1,8 +1,4 @@
-{-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 
 module Graphics.BlankSlate.Prim.Texture (
     Texture(..)
